@@ -2,7 +2,7 @@ steps:
 - task: AzureCLI@2
   displayName: 'Build and Push Docker image to ACR'
   inputs:
-    azureSubscription: 'MyACRServiceConnection'   # ARM connection
+    azureSubscription: 'MyACRServiceConnection1'   # ARM connection
     scriptType: 'bash'
     scriptLocation: 'inlineScript'
     inlineScript: |
