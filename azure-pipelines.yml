@@ -1,0 +1,33 @@
+trigger:
+- main   # or your branch name
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+variables:
+  # Replace with your ACR login server name
+  acrName: 'myethans.azurecr.io'
+  imageName: 'myapp'
+  tag: '$(Build.BuildId)'
+
+steps:
+- task: DockerInstaller@0
+  displayName: 'Install Docker'
+
+- task: Docker@2
+  displayName: 'Build Docker image'
+  inputs:
+    command: 'build'
+    repository: '$(acrName)/$(imageName)'
+    dockerfile: '**/Dockerfile'
+    tags: |
+      $(tag)
+
+- task: Docker@2
+  displayName: 'Push Docker image to ACR'
+  inputs:
+    command: 'push'
+    repository: '$(acrName)/$(imageName)'
+    tags: |
+      $(tag)
+    containerRegistry: 'MyACRServiceConnection'  # Name of your Azure DevOps service connection
