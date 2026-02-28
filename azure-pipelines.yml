@@ -9,3 +9,11 @@ steps:
       az acr login --name myethans
       docker build -t myethans.azurecr.io/myapp:$(Build.BuildId) .
       docker push myethans.azurecr.io/myapp:$(Build.BuildId)
+
+- task: Kubernetes@1
+  displayName: 'kubectl apply file-1'
+  inputs:
+    kubernetesServiceEndpoint: 'aks-service-connetion'
+    command: apply
+    useConfigurationFile: true
+    configuration: 'deployment-service.yml'
