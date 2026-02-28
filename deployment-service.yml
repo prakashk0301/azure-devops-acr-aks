@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment                       #it will create deployment type of resource
+metadata:                              #deployment properties such name, label
+  name: nginx-deployment11
+  labels:
+    app: nginx
+spec:                                  #deployment specification
+  replicas: 3                          # 3 pods
+  selector:
+    matchLabels:                       #this value should match with service selector
+      app: nginx
+      class: devops
+  template:                           #create pod based on template
+    metadata:
+      labels:                         #lable will assign to pod
+        app: nginx
+        class: devops
+    spec:
+      containers:
+      - name: nginx
+        image: myethans.azurecr.io/myapp 
+        ports:
+        - containerPort: 80
+---                                           #you can use three hyphen as seperator
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: my-service-11
+spec:
+  selector:                                       #selector  "key & value" should match with pod labels "key & value"
+    app: nginx
+    class: devops
+  ports:
+    - protocol: TCP
+      port: 80
+  type: LoadBalancer
